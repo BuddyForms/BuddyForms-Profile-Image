@@ -18,7 +18,7 @@ class bf_profile_image_manager {
     private static $plugin_slug = 'profile-image';
 
     public function __construct() {
-        require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_profile_image_log.php';
+        require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_log.php';
         new bf_profile_image_log();
         try {
             $this->bf_profile_image_includes();
@@ -34,11 +34,11 @@ class bf_profile_image_manager {
     }
 
     public function bf_profile_image_includes() {
-        require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_profile_image_form_builder.php';
-        require_once BF_WEBCAM_ELEM_INCLUDES_PATH .'bf_profile_image_admin.php';
+        require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_form_builder.php';
+        require_once BF_PROFILE_IMAGE_INCLUDES_PATH .'bf_profile_image_admin.php';
         new BuddyFormProfileImageAdmin();
         new bf_profile_image_form_builder();
-        require_once BF_WEBCAM_ELEM_INCLUDES_PATH . 'bf_profile_image_form_elements.php';
+        require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_form_elements.php';
         new bf_profile_image_form_elements();
         //require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_form_elements_save.php';
         //new bf_woo_elem_form_elements_save();

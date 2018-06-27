@@ -56,9 +56,18 @@ class bf_profile_image_form_builder {
         }
 
 
-        $elements_select_options['extra']['fields']['profile_image'] =
+        $elements_select_options  =
             array(
-                'label' => __( 'Profile Image', 'buddyforms' ),
+                'registration' => array(
+                    'label' => __( 'Registration', 'buddyforms' ),
+                    'class'  => 'bf_show_if_f_type_registration',
+                    'fields' => array(
+                        'profile_picture'   => array(
+                            'label'  => __( 'Profile Picture', 'buddyforms' ),
+                            'unique' => 'unique'
+                        ),
+                    ),
+                ),
             );
 
 
@@ -86,67 +95,11 @@ class bf_profile_image_form_builder {
         switch ( $field_type ) {
             case 'profile_image':
                 unset($form_fields);
+                $form_fields['hidden']['name'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][name]", 'Profile Picture' );
+                $form_fields['hidden']['slug'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][slug]", 'profile_picture' );
 
-                $name                           = isset( $buddyform['form_fields'][ $field_id ]['name'] ) ? stripcslashes( $buddyform['form_fields'][ $field_id ]['name'] ) : '';
-                $form_fields['general']['name'] = new Element_Textbox( '<b>' . __( 'Label', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][name]", array(
-                    'class'    => "use_as_slug",
-                    'data'     => $field_id,
-                    'value'    => $name,
-                    'required' => 1
-                ) );
+                $form_fields['hidden']['type'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][type]", 'profile_picture' );
 
-                $description                           = isset( $buddyform['form_fields'][ $field_id ]['description'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['description'] ) : '';
-                $form_fields['general']['description'] = new Element_Textbox( '<b>' . __( 'Description', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][description]", array( 'value' => $description ) );
-                $form_fields['advanced']['metabox_enabled'] = new Element_Checkbox( '<b>' . __( 'Add as admin post meta box to the edit screen', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][metabox_enabled]", array( 'metabox_enabled' => '<b>' . __( 'Add this field to the MetaBox', 'buddyforms' ) . '</b>' ), array(
-                    'value' => true,
-                    'id'    => "buddyforms_options[form_fields][" . $field_id . "][required]"
-                ) );
-                $form_fields['hidden']['name'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][name]", 'Webcam' );
-                $form_fields['hidden']['slug'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][slug]", 'profile_image' );
-                $form_fields['hidden']['field_identifier'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][field_identifier]", $field_id );
-
-                $form_fields['hidden']['type'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][type]", $field_type );
-                $height                          = isset( $buddyform['form_fields'][ $field_id ]['height'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['height'] ) : '240';
-                $width                           = isset( $buddyform['form_fields'][ $field_id ]['width'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['width'] ) : '320';
-                $fps                             = isset( $buddyform['form_fields'][ $field_id ]['fps'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['fps'] ) : '30';
-                $quality                             = isset( $buddyform['form_fields'][ $field_id ]['quality'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['quality'] ) : '90';
-                $photo_path_default =explode("uploads", wp_upload_dir()['path'])[1] ;
-                $path                            = isset( $buddyform['form_fields'][ $field_id ]['path'] ) ? stripslashes( $buddyform['form_fields'][ $field_id ]['path'] ) : $photo_path_default;
-                $height_element = new Element_Number( '<b>' . __( 'Height of the live camera viewer in pixels, by default \'240\'. ', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][height]", array(  'class'=>'gfirem_profile_image_admin', 'value' =>  $height , 'id'    => 'height_' . $field_id  ) );
-
-                $height_element->setAttribute('onchange',"changeHeigthRatio('".$field_id."')");
-                $form_fields['general']['profile_image_height'] = $height_element;
-
-                $width_element = new Element_Number( '<b>' . __( 'Width of the live camera viewer in pixels, by default \'320\'. ', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][width]", array( 'field_id'=>$field_id ,'class'=>'gfirem_profile_image_admin', 'value' =>  $width , 'id'    => 'width_' . $field_id
-                ) );
-                $width_element->setAttribute('onchange',"changeWidthRatio('".$field_id."')");
-                $form_fields['general']['profile_image_width'] = $width_element;
-                $form_fields['general']['profile_image_fps'] =  new Element_Number( '<b>' . __( "Set the desired fps (frames per second) capture rate, by default '30'. ", 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][fps]", array( 'class'=>'gfirem_profile_image_admin', 'value' =>  $fps , 'id'    => 'fps_' . $field_id
-                ) );
-                $form_fields['general']['profile_image_quality'] =  new Element_Number( '<b>' . __( "This is the desired quality, from 0 (worst) to 100 (best), by default '90'. ", 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][quality]", array( 'class'=>'gfirem_profile_image_admin', 'value' =>  $quality , 'id'    => 'quality_' . $field_id
-                ) );
-
-
-                $form_fields['general']['profile_image_path'] =  new Element_Textbox( '<b>' . __( "Path to save the photos, by default uploads".  $photo_path_default, 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][path]", array( 'class'=>'gfirem_profile_image_admin', 'value' =>  $path , 'id'    => 'path_' . $field_id
-                ) );
-
-                $take_photo_form_submit =  array(
-                    'true'   => 'True',
-                    'false'  => 'False',
-                );
-                $photo_form_submit_default = 'false';
-                if ( isset( $buddyform['form_fields'][ $field_id ]['profile_image_photo_submit'] ) ) {
-                    $photo_form_submit_default = $buddyform['form_fields'][ $field_id ]['profile_image_photo_submit'];
-                }
-                $form_fields['general']['profile_image_photo_submit'] = new Element_Select( '<b>' . __( 'Take photo when the form is submited: ', 'buddyforms' ) . '</b>', 'buddyforms_options[form_fields][' . $field_id . '][profile_image_photo_submit]',
-                    $take_photo_form_submit,
-                    array(
-                        'id'       => 'product-type',
-
-                        'value'    => $photo_form_submit_default,
-                        'selected' => isset( $product_type_default ) ? $product_type_default : 'false',
-                    )
-                );
 
 
 

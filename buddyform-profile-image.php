@@ -72,6 +72,7 @@ if ( ! class_exists( 'bf_profile_image' ) ) {
             define( 'BF_PROFILE_IMAGE_BASE_NAMEBASE_FILE', trailingslashit( wp_normalize_path( plugin_dir_path( __FILE__ ) ) ) . 'loader.php' );
             define( 'BF_PROFILE_IMAGE_CSS_PATH', plugin_dir_url( __FILE__ ) . 'assets/css/' );
             define( 'BF_PROFILE_IMAGE_JS_PATH', plugin_dir_url( __FILE__ ) . 'assets/js/' );
+            define( 'BF_PROFILE_IMAGE_ASSETS', plugin_dir_url( __FILE__ ) . 'assets/' );
             define( 'BF_PROFILE_IMAGE_VIEW_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR );
             define( 'BF_PROFILE_IMAGE_TEMPLATES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR );
             define( 'BF_PROFILE_IMAGE_INCLUDES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR );
