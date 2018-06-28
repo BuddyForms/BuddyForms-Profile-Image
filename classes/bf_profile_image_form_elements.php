@@ -98,7 +98,7 @@ class bf_profile_image_form_elements {
         if ( ! isset( $customfield['type'] ) ) {
             return $form;
         }
-        if (  is_user_logged_in() && $customfield['type']=='profile_picture' ) {
+        if ( $customfield['type']=='profile_picture' ) {
 
             $this->add_scripts();
             ob_start();
