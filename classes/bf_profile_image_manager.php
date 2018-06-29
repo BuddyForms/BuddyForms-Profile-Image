@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class bf_profile_image_manager {
 
-    protected static $version = '1.4.2';
+    protected static $version = '1.0.0';
     private static $plugin_slug = 'profile-image';
 
     public function __construct() {
@@ -40,10 +40,6 @@ class bf_profile_image_manager {
         new bf_profile_image_form_builder();
         require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_form_elements.php';
         new bf_profile_image_form_elements();
-        //require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_form_elements_save.php';
-        //new bf_woo_elem_form_elements_save();
-
-
     }
 
     public static function get_slug() {

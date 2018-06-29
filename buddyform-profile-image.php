@@ -2,15 +2,15 @@
 /**
  * Plugin Name: Buddyform -> Profile Image
  * Plugin URI:  https://github.com/BuddyForms/BuddyForms-Profile-Image
- * Description: Buddyform Profile Image - Integrate Buddyform with Profile Image Field.
- * Author:      ThemeKraft
- * Author URI: https://profiles.wordpress.org/svenl77
- * Version:     1.0.4
+ * Description: Buddyform Profile Image - Integrate Buddyform Profile Image with a Field of BuddyForms.
+ * Author:      ThemeKraft Team
+ * Author URI:  https://profiles.wordpress.org/svenl77
+ * Version:     1.0.0
  * Licence:     GPLv3
- * Text Domain: buddyform_webcam
+ * Text Domain: bf_profile_image_locale
  * Domain Path: /languages
  *
- * @package buddyform_profile_image
+ * @package bf_profile_image
  *
  *****************************************************************************
  *
@@ -33,70 +33,69 @@
 
 
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	die;
 }
 
 if ( ! class_exists( 'bf_profile_image' ) ) {
 
-    require_once dirname( __FILE__ ) . '/classes/bf_profile_image_fs.php';
-    new bf_profile_image_fs();
+	require_once dirname( __FILE__ ) . '/classes/bf_profile_image_fs.php';
+	new bf_profile_image_fs();
 
-    class bf_profile_image {
+	class bf_profile_image {
 
-        /**
-         * Instance of this class
-         *
-         * @var $instance bf_woo_elem
-         */
-        protected static $instance = null;
+		/**
+		 * Instance of this class
+		 *
+		 * @var $instance bf_woo_elem
+		 */
+		protected static $instance = null;
 
-        private function __construct() {
-            $this->constants();
-            $this->load_plugin_textdomain();
-            // require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_requirements.php';
-            //new bf_woo_elem_requirements();
-            require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
-            new bf_profile_image_manager();
-            // if ( bf_woo_elem_requirements::is_buddy_form_active() && bf_woo_elem_requirements::is_woocommerce_active() ) {
+		private function __construct() {
+			$this->constants();
+			$this->load_plugin_textdomain();
+			// require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_requirements.php';
+			//new bf_woo_elem_requirements();
+			require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
+			new bf_profile_image_manager();
+			// if ( bf_woo_elem_requirements::is_buddy_form_active() && bf_woo_elem_requirements::is_woocommerce_active() ) {
 
 
+			//	register_activation_hook( __FILE__, array( $this, 'activation' ) );
+			//	register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+			//	self::getFreemius()->add_action('after_uninstall', array($this, 'uninstall_cleanup') );
+			//  }
+		}
 
-            //	register_activation_hook( __FILE__, array( $this, 'activation' ) );
-            //	register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
-            //	self::getFreemius()->add_action('after_uninstall', array($this, 'uninstall_cleanup') );
-            //  }
-        }
+		private function constants() {
+			define( 'BF_PROFILE_IMAGE_BASE_NAME', plugin_basename( __FILE__ ) );
+			define( 'BF_PROFILE_IMAGE_BASE_NAMEBASE_FILE', trailingslashit( wp_normalize_path( plugin_dir_path( __FILE__ ) ) ) . 'loader.php' );
+			define( 'BF_PROFILE_IMAGE_CSS_PATH', plugin_dir_url( __FILE__ ) . 'assets/css/' );
+			define( 'BF_PROFILE_IMAGE_JS_PATH', plugin_dir_url( __FILE__ ) . 'assets/js/' );
+			define( 'BF_PROFILE_IMAGE_ASSETS', plugin_dir_url( __FILE__ ) . 'assets/' );
+			define( 'BF_PROFILE_IMAGE_VIEW_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR );
+			define( 'BF_PROFILE_IMAGE_TEMPLATES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR );
+			define( 'BF_PROFILE_IMAGE_INCLUDES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR );
+		}
 
-        private function constants() {
-            define( 'BF_PROFILE_IMAGE_BASE_NAME', plugin_basename( __FILE__ ) );
-            define( 'BF_PROFILE_IMAGE_BASE_NAMEBASE_FILE', trailingslashit( wp_normalize_path( plugin_dir_path( __FILE__ ) ) ) . 'loader.php' );
-            define( 'BF_PROFILE_IMAGE_CSS_PATH', plugin_dir_url( __FILE__ ) . 'assets/css/' );
-            define( 'BF_PROFILE_IMAGE_JS_PATH', plugin_dir_url( __FILE__ ) . 'assets/js/' );
-            define( 'BF_PROFILE_IMAGE_ASSETS', plugin_dir_url( __FILE__ ) . 'assets/' );
-            define( 'BF_PROFILE_IMAGE_VIEW_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR );
-            define( 'BF_PROFILE_IMAGE_TEMPLATES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR );
-            define( 'BF_PROFILE_IMAGE_INCLUDES_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR );
-        }
+		/**
+		 * Return an instance of this class.
+		 *
+		 * @return object A single instance of this class.
+		 */
+		public static function get_instance() {
+			// If the single instance hasn't been set, set it now.
+			if ( null === self::$instance ) {
+				self::$instance = new self;
+			}
 
-        /**
-         * Return an instance of this class.
-         *
-         * @return object A single instance of this class.
-         */
-        public static function get_instance() {
-            // If the single instance hasn't been set, set it now.
-            if ( null === self::$instance ) {
-                self::$instance = new self;
-            }
+			return self::$instance;
+		}
 
-            return self::$instance;
-        }
+		public function load_plugin_textdomain() {
+			load_plugin_textdomain( 'bf_profile_image_locale', false, basename( dirname( __FILE__ ) ) . '/languages' );
+		}
 
-        public function load_plugin_textdomain() {
-            load_plugin_textdomain( 'bf_profile_image_locale', false, basename( dirname( __FILE__ ) ) . '/languages' );
-        }
+	}
 
-    }
-
-    add_action( 'plugins_loaded', array( 'bf_profile_image', 'get_instance' ), 1 );
+	add_action( 'plugins_loaded', array( 'bf_profile_image', 'get_instance' ), 1 );
 }
