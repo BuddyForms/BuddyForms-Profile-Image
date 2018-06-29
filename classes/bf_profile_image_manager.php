@@ -1,12 +1,13 @@
 <?php
-/**
- * @package    WordPress
- * @subpackage Woocommerce, BuddyForms
- * @author     ThemKraft Dev Team
- * @copyright  2017, Themekraft
- * @link       https://github.com/BuddyForms/BuddyForms-Profile-Image
- * @license    GPLv2 or later
+/*
+ * @package WordPress
+ * @subpackage BuddyPress, BuddyForms
+ * @author ThemKraft Dev Team
+ * @copyright 2018, ThemeKraft Team
+ * @link https://github.com/BuddyForms/BuddyForms-Profile-Image
+ * @license GPLv2 or later
  */
+
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,7 +37,7 @@ class bf_profile_image_manager {
     public function bf_profile_image_includes() {
         require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_form_builder.php';
         require_once BF_PROFILE_IMAGE_INCLUDES_PATH .'bf_profile_image_admin.php';
-        new BuddyFormProfileImageAdmin();
+        new bf_profile_image_admin();
         new bf_profile_image_form_builder();
         require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_form_elements.php';
         new bf_profile_image_form_elements();

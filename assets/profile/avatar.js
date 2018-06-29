@@ -314,62 +314,7 @@ window.bp = window.bp || {};
 
             jQuery('.bp-avatar-status').html(contentPreview);
 
-            // Set the avatar !
-           /* bp.ajax.post( 'bp_avatar_set', {
-                json:          true,
-                original_file: avatar.get( 'url' ),
-                crop_w:        avatar.get( 'w' ),
-                crop_h:        avatar.get( 'h' ),
-                crop_x:        avatar.get( 'x' ),
-                crop_y:        avatar.get( 'y' ),
-                item_id:       avatar.get( 'item_id' ),
-                object:        avatar.get( 'object' ),
-                type:          _.isUndefined( avatar.get( 'type' ) ) ? 'crop' : avatar.get( 'type' ),
-                nonce:         avatar.get( 'nonces' ).set
-            } ).done( function( response ) {
-                var avatarStatus = new bp.Views.AvatarStatus( {
-                    value : BP_Uploader.strings.feedback_messages[ response.feedback_code ],
-                    type : 'success'
-                } );
 
-                self.views.add( {
-                    id   : 'status',
-                    view : avatarStatus
-                } );
-
-                avatarStatus.inject( '.bp-avatar-status' );
-
-                // Update each avatars of the page
-                $( '.' + avatar.get( 'object' ) + '-' + response.item_id + '-avatar' ).each( function() {
-                    $(this).prop( 'src', response.avatar );
-                } );
-
-                // Inject the Delete nav
-                bp.Avatar.navItems.get( 'delete' ).set( { hide: 0 } );
-
-                self.Attachment.set( _.extend(
-                    _.pick( avatar.attributes, ['object', 'item_id'] ),
-                    { url: response.avatar, action: 'uploaded' }
-                ) );
-
-            } ).fail( function( response ) {
-                var feedback = BP_Uploader.strings.default_error;
-                if ( ! _.isUndefined( response ) ) {
-                    feedback = BP_Uploader.strings.feedback_messages[ response.feedback_code ];
-                }
-
-                var avatarStatus = new bp.Views.AvatarStatus( {
-                    value : feedback,
-                    type : 'error'
-                } );
-
-                self.views.add( {
-                    id   : 'status',
-                    view : avatarStatus
-                } );
-
-                avatarStatus.inject( '.bp-avatar-status' );
-            } );*/
         },
 
         deleteView:function() {

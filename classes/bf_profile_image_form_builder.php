@@ -20,9 +20,9 @@ class bf_profile_image_form_builder {
 		add_filter( 'buddyforms_add_form_element_select_option', array( $this, 'buddyforms_profile_image_formbuilder_elements_select' ), 1 );
 		add_filter( 'buddyforms_form_element_add_field', array( $this, 'buddyforms_profile_image_create_new_form_builder_form_element' ), 1, 5 );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'load_js_for_builder' ), 10 );
+
 		add_filter( "custom_column_default", array( $this, "profile_image_custom_column_default" ), 1, 2 );
-		//add_filter ("buddyforms_formbuilder_fields_options",array($this,"bf_profile_image_fields_options"),10,3);
+
 	}
 
 	public function profile_image_custom_column_default( $item, $column_name ) {
@@ -44,11 +44,7 @@ class bf_profile_image_form_builder {
 		return $result;
 	}
 
-	public function load_js_for_builder() {
-		// wp_enqueue_script( 'buddyforms_profile_image', BF_WEBCAM_ELEM_JS_PATH.'profile_image.js', array( 'jquery' ) );
-		wp_enqueue_script( 'buddyforms_camera_admin', BF_WEBCAM_ELEM_JS_PATH . 'camera_admin.js', array( 'jquery' ) );
 
-	}
 
 	public function buddyforms_profile_image_formbuilder_elements_select( $elements_select_options ) {
 		global $post;

@@ -7,7 +7,7 @@ Stable tag: 1.0.0
 License: Apache License 2.0
 License URI: http://www.apache.org/licenses/
 
-Add a Webcam field to buddyform !
+Add a Profile Image field to buddyform !
 
 == Description ==
 Add Profile Image field to your form. Now you can add profile image to users  from your form.

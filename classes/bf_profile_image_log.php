@@ -1,12 +1,13 @@
 <?php
 /*
  * @package WordPress
- * @subpackage BuddyPress, Woocommerce, BuddyForms
+ * @subpackage BuddyPress, BuddyForms
  * @author ThemKraft Dev Team
- * @copyright 2017, Themekraft
- * @link http://buddyforms.com/downloads/buddyforms-woocommerce-form-elements/
+ * @copyright 2018, ThemeKraft Team
+ * @link https://github.com/BuddyForms/BuddyForms-Profile-Image
  * @license GPLv2 or later
  */
+
 
 
 if ( ! defined( 'ABSPATH' ) ) {

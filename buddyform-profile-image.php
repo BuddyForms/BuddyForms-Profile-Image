@@ -53,17 +53,14 @@ if ( ! class_exists( 'bf_profile_image' ) ) {
 		private function __construct() {
 			$this->constants();
 			$this->load_plugin_textdomain();
-			// require_once BF_WOO_ELEM_INCLUDES_PATH . 'bf_woo_elem_requirements.php';
-			//new bf_woo_elem_requirements();
-			require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
-			new bf_profile_image_manager();
-			// if ( bf_woo_elem_requirements::is_buddy_form_active() && bf_woo_elem_requirements::is_woocommerce_active() ) {
+            require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_requirements.php';
+			new bf_profile_image_requirements();
+            if ( bf_profile_image_requirements::is_buddy_form_active() && bf_profile_image_requirements::is_buddypress_active() ) {
 
+                 require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
+                 new bf_profile_image_manager();
 
-			//	register_activation_hook( __FILE__, array( $this, 'activation' ) );
-			//	register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
-			//	self::getFreemius()->add_action('after_uninstall', array($this, 'uninstall_cleanup') );
-			//  }
+			 }
 		}
 
 		private function constants() {

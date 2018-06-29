@@ -1,27 +1,29 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Victor
- * Date: 11/04/2018
- * Time: 22:44
+/*
+ * @package WordPress
+ * @subpackage BuddyPress, BuddyForms
+ * @author ThemKraft Dev Team
+ * @copyright 2018, ThemeKraft Team
+ * @link https://github.com/BuddyForms/BuddyForms-Profile-Image
+ * @license GPLv2 or later
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class BuddyFormProfileImageAdmin {
+class bf_profile_image_admin {
 
 	public function __construct() {
-		add_action( 'wp_ajax_nopriv_bp_avatar_upload', array( $this, 'bf_avatar_ajax_upload' ) );
+		add_action( 'wp_ajax_nopriv_bp_avatar_upload', array( $this, 'buddyforms_avatar_ajax_upload' ) );
 		add_action( 'buddyforms_process_submission_end', array( $this, 'buddyforms_profile_picture_user_registration_ended' ), 10, 1 );
 		add_action( 'buddyforms_after_save_post', array( $this, 'buddyforms_profile_image_update_profile_image_post_meta' ), 10, 1 );
 		add_action( 'buddyforms_update_post_meta', array( $this, 'buddyforms_profile_image_update_post_meta' ), 10, 2 );
 		add_action( 'buddyforms_after_activate_user', array( $this, 'buddyforms_after_activate_user' ), 10, 1 );
 	}
 
-	public function bf_avatar_ajax_upload() {
+	public function buddyforms_avatar_ajax_upload() {
 		// Bail if not a POST action.
 		if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
 			wp_die();
