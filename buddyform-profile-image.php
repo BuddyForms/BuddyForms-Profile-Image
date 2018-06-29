@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Buddyform -> Profile Image
+ * Plugin Name: BuddyForms -> Profile Image
  * Plugin URI:  https://github.com/BuddyForms/BuddyForms-Profile-Image
  * Description: Buddyform Profile Image - Integrate Buddyform Profile Image with a Field of BuddyForms.
  * Author:      ThemeKraft Team

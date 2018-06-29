@@ -44,8 +44,6 @@ class bf_profile_image_form_builder {
 		return $result;
 	}
 
-
-
 	public function buddyforms_profile_image_formbuilder_elements_select( $elements_select_options ) {
 		global $post;
 
