@@ -20,9 +20,7 @@ class bf_profile_image_form_builder {
 		add_filter( 'buddyforms_add_form_element_select_option', array( $this, 'buddyforms_profile_image_formbuilder_elements_select' ), 1 );
 		add_filter( 'buddyforms_form_element_add_field', array( $this, 'buddyforms_profile_image_create_new_form_builder_form_element' ), 1, 5 );
 
-
 		add_filter( "custom_column_default", array( $this, "profile_image_custom_column_default" ), 1, 2 );
-
 	}
 
 	public function profile_image_custom_column_default( $item, $column_name ) {
@@ -43,8 +41,6 @@ class bf_profile_image_form_builder {
 
 		return $result;
 	}
-
-
 
 	public function buddyforms_profile_image_formbuilder_elements_select( $elements_select_options ) {
 		global $post;

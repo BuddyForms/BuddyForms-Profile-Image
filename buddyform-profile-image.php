@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Buddyform -> Profile Image
+ * Plugin Name: BuddyForms -> Profile Image
  * Plugin URI:  https://github.com/BuddyForms/BuddyForms-Profile-Image
  * Description: Buddyform Profile Image - Integrate Buddyform Profile Image with a Field of BuddyForms.
  * Author:      ThemeKraft Team
@@ -38,8 +38,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 if ( ! class_exists( 'bf_profile_image' ) ) {
 
-	require_once dirname( __FILE__ ) . '/classes/bf_profile_image_fs.php';
-	new bf_profile_image_fs();
+//	require_once dirname( __FILE__ ) . '/classes/bf_profile_image_fs.php';
+//	new bf_profile_image_fs();
 
 	class bf_profile_image {
 
@@ -56,10 +56,8 @@ if ( ! class_exists( 'bf_profile_image' ) ) {
             require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_requirements.php';
 			new bf_profile_image_requirements();
             if ( bf_profile_image_requirements::is_buddy_form_active() && bf_profile_image_requirements::is_buddypress_active() ) {
-
                  require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
                  new bf_profile_image_manager();
-
 			 }
 		}
 
