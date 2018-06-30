@@ -305,13 +305,13 @@ class bf_profile_image_form_elements {
         require_once $path.'bp-core/bp-core-cssjs.php';
         $bp_attachmett = new BP_Attachment_Avatar();
         $this->custom_avatar_scripts();
-        $buddyform_assets_url = BF_PROFILE_IMAGE_ASSETS.'profile/avatar.js';
+        $buddyform_assets_url = BF_PROFILE_IMAGE_ASSETS.'js/avatar.js';
         // bp_core_avatar_scripts() ;
 
         //$bp_attachmett->script_data();
         // bp_attachments_enqueue_scripts();
         wp_enqueue_script( 'bp-avatar2', $buddyform_assets_url, array( 'jquery' ) );
-        wp_enqueue_script( 'bf-profile-picture', BF_PROFILE_IMAGE_ASSETS.'profile/profilePicture.js', array( 'jquery' ) );
+        wp_enqueue_script( 'bf-profile-picture', BF_PROFILE_IMAGE_ASSETS.'js/profilePicture.js', array( 'jquery' ) );
         wp_enqueue_script( 'bp-plupload', "{$url}bp-plupload.js", array( 'plupload', 'jquery', 'json2', 'wp-backbone' ) );
 
 
