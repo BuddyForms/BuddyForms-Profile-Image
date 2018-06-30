@@ -104,25 +104,25 @@ class bf_profile_image_requirements {
 				/* translators: 1: plugin name(s). */
 					'One of the <u>ThemKraft</u> plugin requires the following plugin: %1$s.',
 					'One of the <u>ThemKraft</u> plugin requires the following plugins: %1$s.',
-					'bf_woo_elem_locale'
+					'bf_profile_image_locale'
 				),
 				'notice_can_install_recommended' => _n_noop(
 				/* translators: 1: plugin name(s). */
 					'One of the <u>ThemKraft</u> plugin recommends the following plugin: %1$s.',
 					'One of the <u>ThemKraft</u> plugin recommends the following plugins: %1$s.',
-					'bf_woo_elem_locale'
+					'bf_profile_image_locale'
 				),
 				'notice_can_activate_required'   => _n_noop(
 				/* translators: 1: plugin name(s). */
 					'The following is a required plugin for one of the <u>ThemKraft</u> and is currently inactive: %1$s.',
 					'The following is a required plugins for one of the <u>ThemKraft</u> and they are currently inactive: %1$s.',
-					'bf_woo_elem_locale'
+					'bf_profile_image_locale'
 				),
 				'notice_ask_to_update'           => _n_noop(
 				/* translators: 1: plugin name(s). */
 					'The following plugin needs to be updated to its latest version to ensure maximum compatibility with this plugin: %1$s.',
 					'The following plugins need to be updated to their latest version to ensure maximum compatibility with this plugin: %1$s.',
-					'bf_woo_elem_locale'
+					'bf_profile_image_locale'
 				),
 			),
 		);
