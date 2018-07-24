@@ -81,9 +81,6 @@ class bf_profile_image_form_builder {
 			$buddyform = get_post_meta( $post->ID, '_buddyforms_options', true );
 		}
 
-		//    if($buddyform['post_type'] != 'product')
-		//        return;
-
 		switch ( $field_type ) {
 			case 'profile_image':
 				unset( $form_fields );
