@@ -49,7 +49,7 @@ class bf_profile_image_form_builder {
 			return;
 		}
 
-		$elements_select_options =
+		$new_element =
 			array(
 				'registration' => array(
 					'label'  => __( 'Registration', 'buddyforms' ),
@@ -64,7 +64,7 @@ class bf_profile_image_form_builder {
 			);
 
 
-		return $elements_select_options;
+		return array_merge( is_array( $elements_select_options ) ? $elements_select_options : array(), $new_element );
 	}
 
 	public function buddyforms_profile_image_create_new_form_builder_form_element( $form_fields, $form_slug, $field_type, $field_id ) {
