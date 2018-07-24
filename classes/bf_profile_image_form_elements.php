@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class bf_profile_image_form_elements {
 
 	public function __construct() {
-		add_filter( 'buddyforms_create_edit_form_display_element', array( $this, 'buddyforms_profile_image_create_new_form_builder' ), 1, 2 );
+		add_filter( 'buddyforms_create_edit_form_display_element', array( $this, 'buddyforms_profile_image_create_new_form_builder' ), 10, 2 );
 	}
 
 	/**
