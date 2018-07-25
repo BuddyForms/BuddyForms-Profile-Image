@@ -55,7 +55,7 @@ if ( ! class_exists( 'bf_profile_image' ) ) {
 			$this->load_plugin_textdomain();
             require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_requirements.php';
 			new bf_profile_image_requirements();
-            if ( bf_profile_image_requirements::is_buddy_form_active() && bf_profile_image_requirements::is_buddypress_active() ) {
+            if ( function_exists( 'buddyforms_core_fs' ) && bf_profile_image_requirements::is_buddypress_active() ) {
                  require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
                  new bf_profile_image_manager();
 			 }
@@ -160,10 +160,7 @@ function bf_pi_fs_is_parent_active() {
 
 function bf_pi_fs_init() {
 	if ( bf_pi_fs_is_parent_active_and_loaded() ) {
-		// Init Freemius.
 		bf_pi_fs();
-
-		// Parent is active, add your init code here.
 	} else {
 		// Parent is inactive, add your error handling here.
 	}

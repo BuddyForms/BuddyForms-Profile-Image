@@ -37,12 +37,6 @@ class bf_profile_image_requirements {
 		return is_plugin_active( 'buddypress/bp-loader.php' );
 	}
 
-	public static function is_buddy_form_active() {
-		self::load_plugins_dependency();
-
-		return ( is_plugin_active( 'buddyforms-premium/BuddyForms.php' ) || is_plugin_active( 'buddyforms/BuddyForms.php' ) );
-	}
-
 	public function setup_init() {
 		// Only Check for requirements in the admin
 		if ( ! is_admin() ) {
@@ -54,7 +48,7 @@ class bf_profile_image_requirements {
 
 	public function remove_woo_footer() {
 		$current_screen = get_current_screen();
-		if ( isset( $current_screen->id ) && $current_screen->id == 'admin_page_bf_wc_fe-install-plugins' && class_exists( 'WC_Admin' ) ) {
+		if ( isset( $current_screen->id ) && $current_screen->id == 'admin_page_bf_profile_image-install-plugins' && class_exists( 'WC_Admin' ) ) {
 			$this->remove_anonymous_callback_hook( 'admin_footer_text', 'WC_Admin', 'admin_footer_text' );
 		}
 	}
@@ -92,8 +86,8 @@ class bf_profile_image_requirements {
 		}
 
 		$config = array(
-			'id'           => 'bf_wc_fe',
-			'menu'         => 'bf_wc_fe-install-plugins', // Menu slug.
+			'id'           => 'bf_profile_image',
+			'menu'         => 'bf_profile_image-install-plugins', // Menu slug.
 			'parent_slug'  => 'plugins.php', // Parent menu slug.
 			'capability'   => 'manage_options', // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
 			'has_notices'  => true, // Show admin notices or not.
