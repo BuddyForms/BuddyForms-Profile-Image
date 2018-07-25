@@ -244,19 +244,10 @@ class bf_profile_image_form_elements {
 			}
 		}
 
-		// wp_enqueue_script ( 'bp-plupload' );
 		wp_enqueue_script( 'bp-plupload' );
 		wp_localize_script( 'bp-plupload', 'BP_Uploader', array( 'strings' => $strings, 'settings' => $settings ) );
 
-		// $profile_picture_assets = BuddyForms::$assets.'resources/profile/';
-		// wp_enqueue_script( 'bf-plupload', "{$profile_picture_assets}profile-upload.js", array( 'plupload', 'jquery', 'json2', 'wp-backbone' ) );
-		//wp_localize_script( 'bf-plupload', 'BP_Uploader', array( 'strings' => $strings, 'settings' => $settings ) );
 
-		/**
-		 * Enqueue some extra scripts if required
-		 *
-		 * Extra scripts need to be registered.
-		 */
 		if ( ! empty( $args['extra_js'] ) ) {
 			foreach ( (array) $args['extra_js'] as $js ) {
 				if ( empty( $js ) ) {
@@ -307,10 +298,6 @@ class bf_profile_image_form_elements {
 		$bp_attachmett = new BP_Attachment_Avatar();
 		$this->custom_avatar_scripts();
 		$buddyform_assets_url = BF_PROFILE_IMAGE_ASSETS . 'js/avatar.js';
-		// bp_core_avatar_scripts() ;
-
-		//$bp_attachmett->script_data();
-		// bp_attachments_enqueue_scripts();
 		wp_enqueue_script( 'bp-avatar2', $buddyform_assets_url, array( 'jquery' ) );
 		wp_enqueue_script( 'bf-profile-picture', BF_PROFILE_IMAGE_ASSETS . 'js/profilePicture.js', array( 'jquery' ) );
 		wp_enqueue_script( 'bp-plupload', "{$url}bp-plupload.js", array( 'plupload', 'jquery', 'json2', 'wp-backbone' ) );

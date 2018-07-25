@@ -76,11 +76,6 @@ class bf_profile_image_form_builder {
 
 		$field_id          = (string) $field_id;
 		$this->load_script = true;
-
-		if ( ! $buddyform ) {
-			$buddyform = get_post_meta( $post->ID, '_buddyforms_options', true );
-		}
-
 		switch ( $field_type ) {
 			case 'profile_image':
 				unset( $form_fields );

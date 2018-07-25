@@ -56,12 +56,6 @@ class bf_profile_image_admin {
 			bp_attachments_json_response( false, $is_html4 );
 		}
 
-		//TODO @vmarin this is need?
-		// Capability check.
-		/* if ( ! bp_attachments_current_user_can( 'edit_avatar', $bp_params ) ) {
-			 bp_attachments_json_response( false, $is_html4 );
-		 }*/
-
 		$bp                             = buddypress();
 		$bp_params['upload_dir_filter'] = '';
 		$needs_reset                    = array();
@@ -191,21 +185,9 @@ class bf_profile_image_admin {
 			'crop_y'        => $crop_y
 		);
 		if ( $this->buddyforms_crop_profile_picture_registration( $r ) ) {
-			//TODO @vmarin this is need?
-			$return = array(
-				'avatar'        => html_entity_decode( bp_core_fetch_avatar( array(
-					'object'  => 'user',
-					'item_id' => $user_id,
-					'html'    => false,
-					'type'    => 'full',
-				) ) ),
-				'feedback_code' => 2,
-				'item_id'       => $user_id,
-			);
 
 			do_action( 'xprofile_avatar_uploaded', (int) $user_id, 'avatar', $r );
-			//TODO @vmarin this is need?
-			// wp_send_json_success( $return );
+
 		}
 	}
 
@@ -216,11 +198,6 @@ class bf_profile_image_admin {
 		if ( empty( $args['original_file'] ) ) {
 			return false;
 		}
-
-		//TODO check if this is valid to include in our logic @victormarin
-		/* if ( ! bp_attachments_current_user_can( 'edit_avatar', $args ) ) {
-			 return false;
-		 }*/
 
 		if ( 'user' === $args['object'] ) {
 			$avatar_dir = 'avatars';

@@ -306,6 +306,7 @@ window.bp = window.bp || {};
             $('#crop_h').val(heigth);
             $('#crop_x').val(cropMarginLeft);
             $('#crop_y').val(cropMarginTop);
+            jQuery("button[type=submit].bf-submit").removeAttr("disabled");
            var contentPreview = '<div class="avatar-crop-management" >' +
                             '<div id="avatar-crop-pane" class="avatar" style="width:150px; height:150px">'+
                                 '<img src="'+original_file+'" style="width: '+width+'px; height: '+heigth+'px; margin-left: -'+cropMarginLeft+'px; margin-top: -'+cropMarginTop+'px; max-width: none;"></img>'+
