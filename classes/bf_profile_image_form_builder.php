@@ -70,18 +70,32 @@ class bf_profile_image_form_builder {
 	public function buddyforms_profile_image_create_new_form_builder_form_element( $form_fields, $form_slug, $field_type, $field_id ) {
 		global $post, $buddyform;
 
-		if ( $post->post_type != 'buddyforms' ) {
-			return;
-		}
-
 		$field_id          = (string) $field_id;
+        $field_slug = isset( $buddyform['form_fields'][$field_id]['slug'] ) ?  $buddyform['form_fields'][$field_id]['slug'] : '';
+
 		$this->load_script = true;
 		switch ( $field_type ) {
-			case 'profile_image':
-				unset( $form_fields );
-				$form_fields['hidden']['name'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][name]", 'Profile Picture' );
+			case 'profile_picture':
+
+                $name                           = isset(  $buddyform['form_fields'][$field_id]['name'] ) ? stripcslashes( $buddyform['form_fields'][$field_id]['name'] ) : __( 'Profile Picture', 'buddyforms' );
+                $form_fields['general']['name'] = new Element_Textbox( '<b>' . __( 'Label', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][name]", array(
+                    'value'    => $name,
+                    'required' => 1
+                ) );
+
+                $description                           = isset( $buddyform['form_fields'][$field_id]['description'] ) ? stripcslashes( $buddyform['form_fields'][$field_id]['description']  ) : '';
+                $form_fields['general']['description'] = new Element_Textbox( '<b>' . __( 'Description:', 'buddyforms' ) . '</b>', "buddyforms_options[form_fields][" . $field_id . "][description]", array( 'value' => $description ) );
+
+
 				$form_fields['hidden']['slug'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][slug]", 'profile_picture' );
 				$form_fields['hidden']['type'] = new Element_Hidden( "buddyforms_options[form_fields][" . $field_id . "][type]", 'profile_picture' );
+                $field_slug                      = empty($field_slug ) == false ? sanitize_title( $field_slug ) : 'profile_picture';
+                $form_fields['advanced']['slug'] = new Element_Textbox( '<b>' . __( 'Slug', 'buddyforms' ) . '</b> <small>(optional)</small>', "buddyforms_options[form_fields][" . $field_id . "][slug]", array(
+                    'shortDesc' => __( 'Underscore before the slug like _name will create a hidden post meta field', 'buddyforms' ),
+                    'value'     => $field_slug,
+                    'required'  => 1,
+                    'class'     => 'slug' . $field_id
+                ) );
 		}
 
 		return $form_fields;
