@@ -254,6 +254,12 @@ p.drag-drop-buttons input#bp-browse-button {
 
 #avatar-crop-actions a.button {
     margin-top: 10px;
+    background-color:black;
+    border:1px solid black;
+    border-radius:5px;
+    color:#fff;
+    margin-right:10px;
+    padding:10px 10px 10px 10px;
 }
 
 #bp-webcam-avatar #avatar-crop-actions a.button {

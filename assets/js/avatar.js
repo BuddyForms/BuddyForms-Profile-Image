@@ -17,56 +17,68 @@ window.bp = window.bp || {};
     var cropheigth ='';
     var cropMarginLeft ='';
     var  cropMarginTop =  '';
-    $( "form" ).submit(function( event ) {
+    $( "form" ).click(function( event ) {
+        var target = event.target.name;
+        if (target === 'submitted' || target === 'save') {
 
-            var avatar = avatarData;
-            if(avatar==''){
-                return true;
+
+        var avatar = avatarData;
+        if (avatar == '') {
+            if (bp.Avatar.avatars.length == 0) {
+                bp.Avatar.displayWarning("You must select profile image before submit the form");
             }
-            bp.ajax.post( 'bp_avatar_set', {
-                json:          true,
-                original_file: avatar.get( 'url' ),
-                crop_w:        avatar.get( 'w' ),
-                crop_h:        avatar.get( 'h' ),
-                crop_x:        avatar.get( 'x' ),
-                crop_y:        avatar.get( 'y' ),
-                item_id:       avatar.get( 'item_id' ),
-                object:        avatar.get( 'object' ),
-                type:          _.isUndefined( avatar.get( 'type' ) ) ? 'crop' : avatar.get( 'type' ),
-                nonce:         avatar.get( 'nonces' ).set
-            } ).done( function( response ) {
+            else {
+                bp.Avatar.displayWarning("You must crop the image before submit the form");
+            }
 
-                // Update each avatars of the page
-                $( '.' + avatar.get( 'object' ) + '-' + response.item_id + '-avatar' ).each( function() {
-                    $(this).prop( 'src', response.avatar );
-                } );
 
-                // Inject the Delete nav
-                bp.Avatar.navItems.get( 'delete' ).set( { hide: 0 } );
+            return false;
+        }
+        bp.ajax.post('bp_avatar_set', {
+            json: true,
+            original_file: avatar.get('url'),
+            crop_w: avatar.get('w'),
+            crop_h: avatar.get('h'),
+            crop_x: avatar.get('x'),
+            crop_y: avatar.get('y'),
+            item_id: avatar.get('item_id'),
+            object: avatar.get('object'),
+            type: _.isUndefined(avatar.get('type')) ? 'crop' : avatar.get('type'),
+            nonce: avatar.get('nonces').set
+        }).done(function (response) {
 
-                bp.Avatar.Attachment.set( _.extend(
-                    _.pick( avatar.attributes, ['object', 'item_id'] ),
-                    { url: response.avatar, action: 'uploaded' }
-                ) );
+            // Update each avatars of the page
+            $('.' + avatar.get('object') + '-' + response.item_id + '-avatar').each(function () {
+                $(this).prop('src', response.avatar);
+            });
 
-            } ).fail( function( response ) {
-                var feedback = BP_Uploader.strings.default_error;
-                if ( ! _.isUndefined( response ) ) {
-                    feedback = BP_Uploader.strings.feedback_messages[ response.feedback_code ];
-                }
+            // Inject the Delete nav
+            bp.Avatar.navItems.get('delete').set({hide: 0});
 
-                var avatarStatus = new bp.Views.AvatarStatus( {
-                    value : feedback,
-                    type : 'error'
-                } );
+            bp.Avatar.Attachment.set(_.extend(
+                _.pick(avatar.attributes, ['object', 'item_id']),
+                {url: response.avatar, action: 'uploaded'}
+            ));
 
-                bp.Avatar.views.add( {
-                    id   : 'status',
-                    view : avatarStatus
-                } );
+        }).fail(function (response) {
+            var feedback = BP_Uploader.strings.default_error;
+            if (!_.isUndefined(response)) {
+                feedback = BP_Uploader.strings.feedback_messages[response.feedback_code];
+            }
 
-                avatarStatus.inject( '.bp-avatar-status' );
-            } );
+            var avatarStatus = new bp.Views.AvatarStatus({
+                value: feedback,
+                type: 'error'
+            });
+
+            bp.Avatar.views.add({
+                id: 'status',
+                view: avatarStatus
+            });
+
+            avatarStatus.inject('.bp-avatar-status');
+        });
+      }
 
     });
 

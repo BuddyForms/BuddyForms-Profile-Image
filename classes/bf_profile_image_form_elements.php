@@ -298,6 +298,7 @@ class bf_profile_image_form_elements {
 		$bp_attachmett = new BP_Attachment_Avatar();
 		$this->custom_avatar_scripts();
 		$buddyform_assets_url = BF_PROFILE_IMAGE_ASSETS . 'js/avatar.js';
+        wp_enqueue_style( 'bp-avatar-css2', BF_PROFILE_IMAGE_ASSETS . 'css/avatar.css' );
 		wp_enqueue_script( 'bp-avatar2', $buddyform_assets_url, array( 'jquery' ) );
 		wp_enqueue_script( 'bf-profile-picture', BF_PROFILE_IMAGE_ASSETS . 'js/profilePicture.js', array( 'jquery' ) );
 		wp_enqueue_script( 'bp-plupload', "{$url}bp-plupload.js", array( 'plupload', 'jquery', 'json2', 'wp-backbone' ) );
