@@ -35,7 +35,10 @@ class bf_profile_image_form_elements {
 
 		if ( $customfield['type'] == 'profile_picture' ) {
 
-			$this->add_scripts();
+		    $is_required = isset($customfield['required']) ? true : false;
+		    $field_id = $form_args['field_id'];
+		    $validation_error_message = $customfield['validation_error_message'];
+			$this->add_scripts($field_id,$is_required, $validation_error_message);
 			ob_start();
 			bp_attachments_get_template_part( 'avatars/index' );
 			$box = "<div class='' >
@@ -45,7 +48,7 @@ class bf_profile_image_form_elements {
                        <input type='hidden' id='crop_x' name ='crop_x_bf'>
                         <input type='hidden' id='crop_y' name ='crop_y_bf'>
                         <input type='hidden' id='type'>
-                         <input type='hidden' id='nonce'>
+                         <input type='hidden' id='nonce'>                        
                                  
                 </div>";
 			echo $box;
@@ -281,7 +284,7 @@ class bf_profile_image_form_elements {
 		add_action( 'bp_after_group_avatar_creation_step', 'bp_avatar_template_check' );
 	}
 
-	public function add_scripts() {
+	public function add_scripts($field_id,$required,$validation_message) {
 		global $bp;
 
 		$user_id                      = get_current_user_id();
@@ -300,6 +303,13 @@ class bf_profile_image_form_elements {
 		$buddyform_assets_url = BF_PROFILE_IMAGE_ASSETS . 'js/avatar.js';
         wp_enqueue_style( 'bp-avatar-css2', BF_PROFILE_IMAGE_ASSETS . 'css/avatar.css' );
 		wp_enqueue_script( 'bp-avatar2', $buddyform_assets_url, array( 'jquery' ) );
+        // Localize the script with new data
+        $params = array(
+            'field_id' => $field_id,
+            'required' => $required,
+            'validation_message'=> $validation_message
+        );
+        wp_localize_script( 'bp-avatar2', 'profile_picture', $params );
 		wp_enqueue_script( 'bf-profile-picture', BF_PROFILE_IMAGE_ASSETS . 'js/profilePicture.js', array( 'jquery' ) );
 		wp_enqueue_script( 'bp-plupload', "{$url}bp-plupload.js", array( 'plupload', 'jquery', 'json2', 'wp-backbone' ) );
 	}

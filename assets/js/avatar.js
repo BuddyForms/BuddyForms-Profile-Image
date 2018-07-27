@@ -25,10 +25,25 @@ window.bp = window.bp || {};
         var avatar = avatarData;
         if (avatar == '') {
             if (bp.Avatar.avatars.length == 0) {
-                bp.Avatar.displayWarning("You must select profile image before submit the form");
+
+
+                if(profile_picture.required){
+                    var avatarStatus = new bp.Views.AvatarStatus({
+                        value: profile_picture.validation_message,
+                        type: 'error'
+                    });
+                    avatarStatus.inject('.bp-avatar-status');
+                }
+
+
             }
             else {
-                bp.Avatar.displayWarning("You must crop the image before submit the form");
+
+                var avatarStatus = new bp.Views.AvatarStatus({
+                    value: 'You must click crop image before submit the form',
+                    type: 'error'
+                });
+                avatarStatus.inject('.bp-avatar-status');
             }
 
 
