@@ -20,33 +20,26 @@ window.bp = window.bp || {};
     $( "form" ).click(function( event ) {
         var target = event.target.name;
         if (target === 'submitted' || target === 'save') {
-
-
         var avatar = avatarData;
         if (avatar == '') {
             if (bp.Avatar.avatars.length == 0) {
-
                 if(profile_picture.required){
                     var avatarStatus = new bp.Views.AvatarStatus({
                         value: profile_picture.validation_message,
                         type: 'error'
                     });
                     avatarStatus.inject('.bp-avatar-status');
-
                     return false;
                 }
             }
             else {
-
                     var avatarStatus = new bp.Views.AvatarStatus({
                         value: 'You must click crop image before submit the form',
                         type: 'error'
                     });
                     avatarStatus.inject('.bp-avatar-status');
                     return false;
-
             }
-
             return true;
         }
         bp.ajax.post('bp_avatar_set', {
