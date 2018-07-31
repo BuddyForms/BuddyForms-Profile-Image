@@ -115,8 +115,15 @@ function bf_pi_fs() {
 			'slug'                => 'profile-image',
 			'type'                => 'plugin',
 			'public_key'          => 'pk_207b666524ddd84e1c4c983dd6162',
-			'is_premium'          => false,
-			'has_paid_plans'      => false,
+			'is_premium'          => true,
+			'is_premium_only'     => true,
+			// If your addon is a serviceware, set this option to false.
+			'has_premium_version' => true,
+			'has_paid_plans'      => true,
+			'trial'               => array(
+				'days'               => 14,
+				'is_require_payment' => true,
+			),
 			'parent'              => array(
 				'id'         => '391',
 				'slug'       => 'buddyforms',
@@ -128,7 +135,7 @@ function bf_pi_fs() {
 				'first-path'     => 'edit.php?post_type=buddyforms&page=buddyforms_welcome_screen',
 				'support'        => false,
 			),
-		) );
+		));
 	}
 
 	return $bf_pi_fs;
