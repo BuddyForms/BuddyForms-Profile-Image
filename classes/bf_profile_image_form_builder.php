@@ -25,7 +25,7 @@ class bf_profile_image_form_builder {
 
 	public function profile_image_custom_column_default( $item, $column_name ) {
 		global $buddyforms;
-		$column_val = get_post_meta( $item->ID, $column_name, true );
+		$column_val = get_post_meta( intval($item->ID), $column_name, true );
 		$result     = $column_val;
 		$formSlug   = $_GET['form_slug'];
 		$buddyFData = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
@@ -35,11 +35,11 @@ class bf_profile_image_form_builder {
 			if ( $field == $column_name && $type == 'profile_image' ) {
 				$url    = wp_get_attachment_url( $column_val );
 				$result = " <a style='vertical-align: top;' target='_blank' href='" . $url . "'>$column_val</a>";
-
+				return $result;
 			}
 		}
 
-		return $result;
+		return $item;
 	}
 
 	public function buddyforms_profile_image_formbuilder_elements_select( $elements_select_options ) {
