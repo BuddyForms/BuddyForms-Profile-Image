@@ -59,6 +59,16 @@ if ( ! class_exists( 'bf_profile_image' ) ) {
                  require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
                  new bf_profile_image_manager();
 			 }
+			 else{
+                 $result = array(0=>array(
+                     'satisfied'   => false,
+                     'requirement' => __( "Profile Image plugin requires the following plugin: Buddypress", 'bf_profile_image_locale' )
+                 ));
+                 $fauxPlugin = new bf_profile_image_faux_plugin( 'Profile Image',$result );
+                 $fauxPlugin->show_result( plugin_basename( __FILE__ ) );
+
+             }
+
 		}
 
 		private function constants() {

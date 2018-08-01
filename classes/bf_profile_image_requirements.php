@@ -125,3 +125,116 @@ class bf_profile_image_requirements {
 		tgmpa( $plugins, $config );
 	}
 }
+
+class bf_profile_image_faux_plugin {
+    public $pluginName;
+    public $results;
+
+    function __construct( $pluginName, $results ) {
+        $this->pluginName = $pluginName;
+        $this->results    = $results;
+    }
+
+    /**
+     * NOTE This don't work in multisite
+     */
+    function activate( $pluginFile ) {
+        register_activation_hook(
+            $pluginFile, array( $this, 'onActivate' )
+        );
+    }
+
+    function onActivate() {
+        $this->showError( $this->resultsToNotice() );
+    }
+
+    function showError( $message ) {
+        if ( $this->isErrorScraper() ) {
+            echo $message;
+            $this->quit();
+        } else {
+            throw new WP_Requirements_Exception();
+        }
+    }
+
+    function quit() {
+        if ( ! defined( 'PHPUNIT_RUNNER' ) ) {
+            exit();
+        }
+    }
+
+    function isErrorScraper() {
+        $result = Request_Helper::simple_get('action');
+        return $result === 'error_scrape';
+    }
+
+    function resultsToNotice() {
+        $html = $this->getStyles();
+        $html .= $this->getHeading();
+        foreach ( $this->results as $result ) {
+            if ( ! $result['satisfied'] ) {
+                $html .= $this->resultToNotice( $result );
+            }
+        }
+
+        return $this->toDiv( $html, 'error' );
+    }
+
+    function resultToNotice( $result ) {
+        $message = $result['requirement'];
+
+        return "<li>$message</li>";
+    }
+
+    function toDiv( $content, $classname ) {
+        return "<div class='$classname'>$content</div>";
+    }
+
+    function getHeading() {
+        $html = wc4bp_requirements::_t( "<p>Minimum System Requirements not satisfied for: " );
+        $html .= "<strong>$this->pluginName</strong>.";
+        $html .= wc4bp_requirements::_t( " The plugins wont be activated.</p>" );
+
+        return $html;
+    }
+
+    function getStyles() {
+        $styles = '.requirement_sub_list{ margin-left: 50px; }.requirement_sub_item{margin-left: 15px;} ';
+        $styles = "<style type='text/css' scoped>$styles</style>";
+
+        return $styles;
+    }
+
+    /**
+     * Show te result and disable the plugins.
+     *
+     * NOTE: it work in wpmu and wp
+     *
+     * @param string $file primary file of the plugins
+     */
+    public function show_result( $file ) {
+        if ( is_multisite() ) {
+            add_action( 'network_admin_notices', array( $this, 'show_notice' ) );
+            $plugins = get_site_option( 'active_sitewide_plugins' );
+            if ( isset( $plugins[ $file ] ) ) {
+                unset( $plugins[ $file ] );
+                $result = update_site_option( 'active_sitewide_plugins', $plugins );
+            }
+        } else {
+            add_action( 'admin_notices', array( $this, 'show_notice' ) );
+            $plugins = get_option( 'active_plugins' );
+            foreach ( $plugins as $key => $name ) {
+                if ( $name == $file ) {
+                    unset( $plugins[ $key ] );
+                    $result = update_option( 'active_plugins', $plugins );
+                    break;
+                }
+            }
+        }
+    }
+
+    public function show_notice() {
+        echo $this->resultsToNotice();
+    }
+}
+
