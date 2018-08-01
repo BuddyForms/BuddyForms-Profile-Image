@@ -53,22 +53,22 @@ if ( ! class_exists( 'bf_profile_image' ) ) {
 		private function __construct() {
 			$this->constants();
 			$this->load_plugin_textdomain();
-            require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_requirements.php';
+			require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_requirements.php';
 			new bf_profile_image_requirements();
-            if ( function_exists( 'buddyforms_core_fs' ) && bf_profile_image_requirements::is_buddypress_active() ) {
-                 require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
-                 new bf_profile_image_manager();
-			 }
-			 else{
-                 $result = array(0=>array(
-                     'satisfied'   => false,
-                     'requirement' => __( "Profile Image plugin requires the following plugin: Buddypress", 'bf_profile_image_locale' )
-                 ));
-                 $fauxPlugin = new bf_profile_image_faux_plugin( 'Profile Image',$result );
-                 $fauxPlugin->show_result( plugin_basename( __FILE__ ) );
+			if ( function_exists( 'buddyforms_core_fs' ) && bf_profile_image_requirements::is_buddypress_active() ) {
+				require_once BF_PROFILE_IMAGE_INCLUDES_PATH . 'bf_profile_image_manager.php';
+				new bf_profile_image_manager();
+			} else {
+				add_action( 'network_admin_notices', array( $this, 'requirement_message' ) );
+				add_action( 'admin_notices', array( $this, 'requirement_message' ) );
+			}
 
-             }
+		}
 
+		public function requirement_message() {
+			echo '<div class="error"><p>'
+			     . __( '<b>BuddyForms -> Profile Image</b> requires that BuddyForms and BuddyPress are installed and active. Until then, keep plugin activated only to continue enjoying this insightful message.', 'bf_profile_image_locale' )
+			     . '</p></div>';
 		}
 
 		private function constants() {
@@ -141,11 +141,11 @@ function bf_pi_fs() {
 				'name'       => 'BuddyForms',
 			),
 			'menu'                => array(
-				'slug'           => 'edit.php?post_type=profile-image',
-				'first-path'     => 'edit.php?post_type=buddyforms&page=buddyforms_welcome_screen',
-				'support'        => false,
+				'slug'       => 'edit.php?post_type=profile-image',
+				'first-path' => 'edit.php?post_type=buddyforms&page=buddyforms_welcome_screen',
+				'support'    => false,
 			),
-		));
+		) );
 	}
 
 	return $bf_pi_fs;
