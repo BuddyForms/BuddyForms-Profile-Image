@@ -122,7 +122,7 @@ class bf_profile_image_requirements {
 		);
 
 		// Call the tgmpa function to register the required plugins
-		tgmpa( $plugins, $config );
+        profile_image_tgmpa( $plugins, $config );
 	}
 }
 
