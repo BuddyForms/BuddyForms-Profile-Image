@@ -18,10 +18,33 @@ class bf_profile_image_admin {
 	public function __construct() {
 		add_action( 'wp_ajax_nopriv_bp_avatar_upload', array( $this, 'buddyforms_avatar_ajax_upload' ) );
 		add_action( 'buddyforms_process_submission_end', array( $this, 'buddyforms_profile_picture_user_registration_ended' ), 10, 1 );
-		add_action( 'buddyforms_after_save_post', array( $this, 'buddyforms_profile_image_update_profile_image_post_meta' ), 10, 1 );
-		add_action( 'buddyforms_update_post_meta', array( $this, 'buddyforms_profile_image_update_post_meta' ), 10, 2 );
+
 		add_action( 'buddyforms_after_activate_user', array( $this, 'buddyforms_after_activate_user' ), 10, 1 );
+        add_action( 'buddyforms_process_field_submission', array( $this, 'buddyforms_profile_image_process_field_submission' ), 10,7 );
+
 	}
+
+	public function buddyforms_profile_image_process_field_submission($field_slug, $field_type, $customfield, $post_id, $form_slug, $args, $action){
+
+        $the_post  = get_post( $post_id );
+        $exploded_data = '';
+        if($field_type == 'profile_picture'){
+            if($action == 'update'){
+                $exploded_data = bp_core_fetch_avatar ( array( 'item_id' => $the_post->post_author, 'type' => 'full','html'=>false ) );
+
+            }
+            elseif ($action == 'save'){
+
+                $exploded_data = isset($_POST['original-file-bf']) ? $_POST['original-file-bf'] : '';
+
+            }
+
+            if(! empty( $exploded_data ) ){
+                update_user_meta(intval( $the_post->post_author), 'profile_image', $exploded_data );
+
+            }
+        }
+    }
 
 	public function buddyforms_avatar_ajax_upload() {
 		// Bail if not a POST action.
@@ -187,6 +210,9 @@ class bf_profile_image_admin {
 		if ( $this->buddyforms_crop_profile_picture_registration( $r ) ) {
 
 			do_action( 'xprofile_avatar_uploaded', (int) $user_id, 'avatar', $r );
+			$avatar_uploaded_path =  $exploded_data = bp_core_fetch_avatar ( array( 'item_id' => (int)$user_id, 'type' => 'full','html'=>false ) );
+            update_user_meta(intval( $user_id), 'profile_image', $avatar_uploaded_path );
+
 
 		}
 	}
@@ -328,63 +354,33 @@ class bf_profile_image_admin {
 	public function buddyforms_profile_image_update_post_meta( $customfield, $post_id ) {
 		global $buddyforms;
 
-		$formSlug      = isset( $_POST['_bf_form_slug'] ) ? $_POST['_bf_form_slug'] : '';
+		$formSlug      = isset( $_POST['form_slug'] ) ? $_POST['form_slug'] : '';
 		$exploded_data = '';
 		$id            = '';
 		$path          = '';
+        $the_post = get_post($post_id);
 		$buddyFData    = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
 		foreach ( $buddyFData as $key => $value ) {
 			$field = $value['slug'];
 			$type  = $value['type'];
 			$post  = get_post( $post_id );
-			if ( $field == bf_profile_image_manager::get_slug() && $type == 'profile_image' ) {
+			if ( $field == 'profile_picture' && $type == 'profile_picture' ) {
 				$key_value          = $_POST[ $key ];
 				$path               = $value['path'];
-				$exploded_data_prev = explode( ",", $key_value );
-				if ( isset( $exploded_data_prev[1] ) ) {
-					$exploded_data = $exploded_data_prev[1];
-				}
-				$id = $key;
+
+				if($the_post!=0 && !empty($the_post)){
+
+                    $exploded_data = bp_core_fetch_avatar ( array( 'item_id' => $the_post->post_author, 'type' => 'full','html'=>false ) );
+                }
+
 				break;
 			}
 
 		}
-		if ( ! empty( $exploded_data ) ) {
-			$slug          = bf_profile_image_manager::get_slug();
-			$decoded_image = base64_decode( $exploded_data );
-			$absolute_path = wp_upload_dir()['basedir'] . $path;
-			$upload_dir    = $absolute_path;
-			$file_id       = $slug . '_' . $id . '_' . time();
-			$file_name     = $file_id . ".png";
-			$full_path     = wp_normalize_path( $upload_dir . DIRECTORY_SEPARATOR . $file_name );
-			$upload_file   = wp_upload_bits( $file_name, null, $decoded_image );
-			if ( ! $upload_file['error'] ) {
-				if ( ! file_exists( $absolute_path ) ) {
-					mkdir( $absolute_path, 0777, true );
-					rename( $upload_file['file'], $absolute_path . '/' . $file_name );
-				} else {
+		if(! empty( $exploded_data ) ){
+            update_user_meta(intval( $the_post->post_author), 'profile_image', $exploded_data );
 
-					$default_path = wp_upload_dir()['path'];
-					if ( $absolute_path !== $default_path ) {
-						rename( $upload_file['file'], $absolute_path . '/' . $file_name );
-					}
-				}
-				$wp_filetype   = wp_check_filetype( $file_name, null );
-				$attachment    = array(
-					'post_mime_type' => $wp_filetype['type'],
-					'post_title'     => preg_replace( '/\.[^.]+$/', '', $file_name ),
-					'post_content'   => '',
-					'post_status'    => 'inherit'
-				);
-				$attachment_id = wp_insert_attachment( $attachment, $absolute_path . '/' . $file_name );
-				if ( ! is_wp_error( $attachment_id ) ) {
-					require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
-					$attachment_data = wp_generate_attachment_metadata( $attachment_id, $absolute_path . '/' . $file_name );
-					wp_update_attachment_metadata( $attachment_id, $attachment_data );
-					update_post_meta( $post_id, 'profile_image', $attachment_id );
-				}
-			}
-		}
+        }
 
 	}
 
@@ -394,61 +390,25 @@ class bf_profile_image_admin {
 		$exploded_data = '';
 		$id            = '';
 		$path          = '';
+        $the_post = get_post($post_id);
 		$buddyFData    = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
 		foreach ( $buddyFData as $key => $value ) {
 			$field = $value['slug'];
 			$type  = $value['type'];
 			$post  = get_post( $post_id );
-			if ( $field == bf_profile_image_manager::get_slug() && $type == 'profile_image' ) {
+			if ( $field == 'profile_picture' && $type == 'profile_picture' ) {
 				$key_value          = $_POST[ $key ];
 				$path               = $value['path'];
-				$exploded_data_prev = explode( ",", $key_value );
-				if ( isset( $exploded_data_prev[1] ) ) {
-					$exploded_data = $exploded_data_prev[1];
-				}
-				$id = $key;
+                if($the_post!=0 && !empty($the_post)){
+                    $exploded_data = bp_core_fetch_avatar ( array( 'item_id' => $the_post->post_author, 'type' => 'full','html'=>false ) );
+                }
 				break;
 			}
 		}
-		if ( ! empty( $exploded_data ) ) {
-			$slug = bf_profile_image_manager::get_slug();
+        if(! empty( $exploded_data ) ){
+            update_user_meta(intval( $the_post->post_author), 'profile_image', $exploded_data );
 
-			$decoded_image = base64_decode( $exploded_data );
-
-			$absolute_path = wp_upload_dir()['basedir'] . $path;
-			$upload_dir    = $absolute_path;
-			$file_id       = $slug . '_' . $id . '_' . time();
-			$file_name     = $file_id . ".png";
-			$full_path     = wp_normalize_path( $upload_dir . DIRECTORY_SEPARATOR . $file_name );
-			$upload_file   = wp_upload_bits( $file_name, null, $decoded_image );
-			if ( ! $upload_file['error'] ) {
-				if ( ! file_exists( $absolute_path ) ) {
-					mkdir( $absolute_path, 0777, true );
-					rename( $upload_file['file'], $absolute_path . '/' . $file_name );
-				} else {
-
-					$default_path = wp_upload_dir()['path'];
-					if ( $absolute_path !== $default_path ) {
-						rename( $upload_file['file'], $absolute_path . '/' . $file_name );
-					}
-				}
-
-				$wp_filetype   = wp_check_filetype( $file_name, null );
-				$attachment    = array(
-					'post_mime_type' => $wp_filetype['type'],
-					'post_title'     => preg_replace( '/\.[^.]+$/', '', $file_name ),
-					'post_content'   => '',
-					'post_status'    => 'inherit'
-				);
-				$attachment_id = wp_insert_attachment( $attachment, $absolute_path . '/' . $file_name );
-				if ( ! is_wp_error( $attachment_id ) ) {
-					require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
-					$attachment_data = wp_generate_attachment_metadata( $attachment_id, $absolute_path . '/' . $file_name );
-					wp_update_attachment_metadata( $attachment_id, $attachment_data );
-					update_post_meta( $post_id, 'profile_image', $attachment_id );
-				}
-			}
-		}
+        }
 
 	}
 

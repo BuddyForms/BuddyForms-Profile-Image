@@ -28,16 +28,21 @@ class bf_profile_image_form_builder {
 		if ( empty( $item ) || 'profile_picture' !== $field_type ) {
 			return $bf_value;
 		}
-		$column_val = get_post_meta( intval( $item->ID ), $field_slug, true );
+		if( 'profile_picture' == $field_type){
+            $column_val = get_user_meta( intval( $item->post_author), 'profile_image', true );
+        }
+        else{
+            $column_val = get_post_meta( intval( $item->ID ), $field_slug, true );
+        }
 		$result     = $column_val;
 		$formSlug   = $_GET['form_slug'];
 		$buddyFData = isset( $buddyforms[ $formSlug ]['form_fields'] ) ? $buddyforms[ $formSlug ]['form_fields'] : [];
 		foreach ( $buddyFData as $key => $value ) {
 			$field = $value['slug'];
 			$type  = $value['type'];
-			if ( $field == $field_slug && $type == 'profile_image' ) {
+			if ( $field == $field_slug && $type == 'profile_picture' ) {
 				$url    = wp_get_attachment_url( $column_val );
-				$result = " <a style='vertical-align: top;' target='_blank' href='" . $url . "'>$column_val</a>";
+				$result = " <a style='vertical-align: top;' target='_blank' href='" . $column_val . "'>$item->post_author</a>";
 
 				return $result;
 			}
