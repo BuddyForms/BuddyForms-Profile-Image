@@ -48,7 +48,9 @@ class bf_profile_image_form_builder {
 			}
 		}
 
-		return $item;
+		$result = is_string($column_val) ? $column_val : "";
+
+		return $result;
 	}
 
 	public function buddyforms_profile_image_formbuilder_elements_select( $elements_select_options ) {

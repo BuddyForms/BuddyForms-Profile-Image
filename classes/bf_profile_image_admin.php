@@ -354,7 +354,10 @@ class bf_profile_image_admin {
 	public function buddyforms_profile_image_update_post_meta( $customfield, $post_id ) {
 		global $buddyforms;
 
-		$formSlug      = isset( $_POST['form_slug'] ) ? $_POST['form_slug'] : '';
+		$formSlug      = isset( $_POST['_bf_form_slug'] ) ? $_POST['_bf_form_slug'] : '';
+		if(empty($formSlug)){
+            $formSlug      = isset( $_POST['form_slug'] ) ? $_POST['form_slug'] : '';
+        }
 		$exploded_data = '';
 		$id            = '';
 		$path          = '';
@@ -364,7 +367,7 @@ class bf_profile_image_admin {
 			$field = $value['slug'];
 			$type  = $value['type'];
 			$post  = get_post( $post_id );
-			if ( $field == 'profile_picture' && $type == 'profile_picture' ) {
+			if (  $type == 'profile_picture' ) {
 				$key_value          = $_POST[ $key ];
 				$path               = $value['path'];
 
