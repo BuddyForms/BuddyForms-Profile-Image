@@ -21,8 +21,19 @@ class bf_profile_image_admin {
 
 		add_action( 'buddyforms_after_activate_user', array( $this, 'buddyforms_after_activate_user' ), 10, 1 );
         add_action( 'buddyforms_process_field_submission', array( $this, 'buddyforms_profile_image_process_field_submission' ), 10,7 );
+        add_filter( 'buddyforms_global_localize_scripts', array( $this, 'buddyforms_profile_image_add_global_param' ), 100, 2 );
 
 	}
+
+	function buddyforms_profile_image_add_global_param($js_params, $form_slug ){
+
+        $js_params['logged_in'] = false;
+        if(is_user_logged_in()){
+            $js_params['logged_in'] = true;
+        }
+        return $js_params;
+
+    }
 
 	public function buddyforms_profile_image_process_field_submission($field_slug, $field_type, $customfield, $post_id, $form_slug, $args, $action){
 
@@ -83,30 +94,30 @@ class bf_profile_image_admin {
 		$bp_params['upload_dir_filter'] = '';
 		$needs_reset                    = array();
 
-		if ( 'user' === $bp_params['object'] && bp_is_active( 'xprofile' ) ) {
-			$bp_params['upload_dir_filter'] = 'xprofile_avatar_upload_dir';
+        if ( 'user' === $bp_params['object'] && bp_is_active( 'members' ) ) {
+            $bp_params['upload_dir_filter'] = 'bp_members_avatar_upload_dir';
 
-			if ( ! bp_displayed_user_id() && ! empty( $bp_params['item_id'] ) ) {
-				$needs_reset            = array( 'key' => 'displayed_user', 'value' => $bp->displayed_user );
-				$bp->displayed_user->id = $bp_params['item_id'];
-			}
-		} elseif ( 'group' === $bp_params['object'] && bp_is_active( 'groups' ) ) {
-			$bp_params['upload_dir_filter'] = 'groups_avatar_upload_dir';
+            if ( ! bp_displayed_user_id() && ! empty( $bp_params['item_id'] ) ) {
+                $needs_reset = array( 'key' => 'displayed_user', 'value' => $bp->displayed_user );
+                $bp->displayed_user->id = $bp_params['item_id'];
+            }
+        } elseif ( 'group' === $bp_params['object'] && bp_is_active( 'groups' ) ) {
+            $bp_params['upload_dir_filter'] = 'groups_avatar_upload_dir';
 
-			if ( ! bp_get_current_group_id() && ! empty( $bp_params['item_id'] ) ) {
-				$needs_reset               = array( 'component' => 'groups', 'key' => 'current_group', 'value' => $bp->groups->current_group );
-				$bp->groups->current_group = groups_get_group( $bp_params['item_id'] );
-			}
-		} else {
-			/**
-			 * Filter here to deal with other components.
-			 *
-			 * @since 2.3.0
-			 *
-			 * @var array $bp_params the BuddyPress Ajax parameters.
-			 */
-			$bp_params = apply_filters( 'bp_core_avatar_ajax_upload_params', $bp_params );
-		}
+            if ( ! bp_get_current_group_id() && ! empty( $bp_params['item_id'] ) ) {
+                $needs_reset = array( 'component' => 'groups', 'key' => 'current_group', 'value' => $bp->groups->current_group );
+                $bp->groups->current_group = groups_get_group( $bp_params['item_id'] );
+            }
+        } else {
+            /**
+             * Filter here to deal with other components.
+             *
+             * @since 2.3.0
+             *
+             * @var array $bp_params the BuddyPress Ajax parameters.
+             */
+            $bp_params = apply_filters( 'bp_core_avatar_ajax_upload_params', $bp_params );
+        }
 
 		if ( ! isset( $bp->avatar_admin ) ) {
 			$bp->avatar_admin = new stdClass();
