@@ -5,7 +5,7 @@
  * Description: Buddyform Profile Image - Integrate Buddyform Profile Image with a Field of BuddyForms.
  * Author:      ThemeKraft Team
  * Author URI:  https://profiles.wordpress.org/svenl77
- * Version:     1.0.0
+ * Version:     1.0.1
  * Licence:     GPLv3
  * Text Domain: bf_profile_image_locale
  * Domain Path: /languages
@@ -131,7 +131,7 @@ function bf_pi_fs() {
 			'has_premium_version' => true,
 			'has_paid_plans'      => true,
 			'trial'               => array(
-				'days'               => 14,
+				'days'               => 7,
 				'is_require_payment' => true,
 			),
 			'parent'              => array(
@@ -142,9 +142,10 @@ function bf_pi_fs() {
 			),
 			'menu'                => array(
 				'slug'       => 'edit.php?post_type=profile-image',
-				'first-path' => 'edit.php?post_type=buddyforms&page=buddyforms_welcome_screen',
+				'first-path' => 'plugins.php',
 				'support'    => false,
 			),
+			'bundle_license_auto_activation' => true,
 		) );
 	}
 

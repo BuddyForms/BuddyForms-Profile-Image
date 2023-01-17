@@ -2,8 +2,8 @@
 Contributors: gfirem, marin250189, themekraft, svenl77
 Tags: buddyforms, buddyforms fields, buddyforms field profile-image, buddyPress profile photo,
 Requires at least: 4.5
-Tested up to: 4.9
-Stable tag: 1.0.0
+Tested up to: 6.1.1
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,11 @@ Activate the plugin through the 'Plugins' menu in WordPress.
 > * If you still get stuck somewhere, our support gets you back on the right track. You can find all help buttons in your BuddyForms Settings Panel in your WP Dashboard and the Help Center!
 
 == Changelog ==
+= 1.0.1 - 16 Jan 2023 =
+* Updated duration of trial version.
+* Enabled bundle license auto activation.
+* Updated first path to avoid issues after activation.
+* Fixed issue related with image not loading if usser is not logged.
 
-= 1.0 =
-* final 1.0 version
+= 1.0.0 =
+* Released public version 1.0.0
